@@ -15,8 +15,8 @@ import cn.ddh.simulatedclick.event.SlideEvent
 
 
 class AddViewDialogBuilder(
-    private val context: Context,
-    private val onAddViewListener: OnAddViewListener
+        private val context: Context,
+        private val onAddViewListener: OnAddViewListener
 ) {
 
     interface OnAddViewListener {
@@ -104,26 +104,26 @@ class AddViewDialogBuilder(
 
 
         rootViewGroup.layoutParams = LinearLayout.LayoutParams(
-            displayMetrics.widthPixels - 200,
-            LinearLayout.LayoutParams.WRAP_CONTENT
+                displayMetrics.widthPixels - 200,
+                LinearLayout.LayoutParams.WRAP_CONTENT
         )
 
 
         rootViewGroup.adapter =
-            ArrayAdapter(
-                context,
-                android.R.layout.simple_spinner_item,
-                mutableListOf("点击", "滑动", "返回")
-            )
+                ArrayAdapter(
+                        context,
+                        R.layout.item_spinner,
+                        mutableListOf("点击", "滑动", "返回")
+                )
         rootViewGroup.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
             override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
             ) {
                 selectPos = position
                 changeUI()
@@ -172,10 +172,10 @@ class AddViewDialogBuilder(
                     return
                 }
                 onAddViewListener.addTask(
-                    ClickEvent(
-                        delayInt,
-                        Point(etPoint1x.toInt(), etPoint1y.toInt()), cycleInt
-                    )
+                        ClickEvent(
+                                delayInt,
+                                Point(etPoint1x.toInt(), etPoint1y.toInt()), cycleInt
+                        )
                 )
                 dialog.dismiss()
 
@@ -193,18 +193,18 @@ class AddViewDialogBuilder(
                     return
                 }
                 onAddViewListener.addTask(
-                    SlideEvent(
-                        delayInt,
-                        Point(etPoint1x.toInt(), etPoint1y.toInt()),
-                        Point(etPoint2x.toInt(), etPoint2y.toInt()), cycleInt
-                    )
+                        SlideEvent(
+                                delayInt,
+                                Point(etPoint1x.toInt(), etPoint1y.toInt()),
+                                Point(etPoint2x.toInt(), etPoint2y.toInt()), cycleInt
+                        )
                 )
                 dialog.dismiss()
 
 
             } else {
                 onAddViewListener.addTask(
-                    BackEvent(delayInt, cycleInt)
+                        BackEvent(delayInt, cycleInt)
                 )
                 dialog.dismiss()
 

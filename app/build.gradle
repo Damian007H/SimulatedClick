@@ -13,13 +13,33 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            keyPassword '888888'
+            storeFile file('simulation.jks')
+            storePassword '888888'
+            keyAlias = 'simulation'
+        }
+        debug {
+            storeFile file('simulation.jks')
+            storePassword '888888'
+            keyPassword '888888'
+            keyAlias = 'simulation'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

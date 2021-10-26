@@ -17,9 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var tvShow: TextView
 
-    companion object {
-        val TAG: String = "test_hjd"
-    }
+
 
     private val REQUEST_CODE = 2001
 

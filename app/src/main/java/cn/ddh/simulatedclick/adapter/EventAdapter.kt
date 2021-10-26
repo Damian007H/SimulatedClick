@@ -10,17 +10,17 @@ import cn.ddh.simulatedclick.R
 import cn.ddh.simulatedclick.event.EventBase
 
 class EventAdapter(private val context: Context, private val list: MutableList<EventBase>) :
-    RecyclerView.Adapter<EventAdapter.ViewHolder>() {
+        RecyclerView.Adapter<EventAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView = view.findViewById<TextView>(R.id.tv_content)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(
-            LayoutInflater.from(
-                context
-            ).inflate(R.layout.item_event, null)
-        )
+            ViewHolder(
+                    LayoutInflater.from(
+                            context
+                    ).inflate(R.layout.item_event, null)
+            )
 
     override fun getItemCount() = list.size
 

@@ -7,7 +7,6 @@ import android.graphics.Path
 import android.graphics.PixelFormat
 import android.graphics.Point
 import android.os.Build
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +23,7 @@ import cn.ddh.simulatedclick.event.EventBase
 
 
 class FloatingService : AccessibilityService(), FloatTouchListener.OnFloatTouchListener,
-    AddViewDialogBuilder.OnAddViewListener, ViewModel.OnWorkDoneListener {
+        AddViewDialogBuilder.OnAddViewListener, ViewModel.OnWorkDoneListener {
 
     private var taskIng = false
 
@@ -47,7 +46,7 @@ class FloatingService : AccessibilityService(), FloatTouchListener.OnFloatTouchL
 
     private val eventList = mutableListOf<EventBase>()
     private val eventAdapter =
-        EventAdapter(this, eventList)
+            EventAdapter(this, eventList)
 
     private var currentTaskPos = -1
 
@@ -152,7 +151,7 @@ class FloatingService : AccessibilityService(), FloatTouchListener.OnFloatTouchL
     }
 
     private fun changeStatusUI() =
-        ivFun.setImageResource(if (taskIng) R.mipmap.icon_puse else R.mipmap.icon_play)
+            ivFun.setImageResource(if (taskIng) R.mipmap.icon_puse else R.mipmap.icon_play)
 
 
     /**
@@ -165,7 +164,7 @@ class FloatingService : AccessibilityService(), FloatTouchListener.OnFloatTouchL
      * @return 对应生成的LayoutParams
      */
     private fun setLayoutParams(
-        flag: Int
+            flag: Int
     ): WindowManager.LayoutParams {
         val layout: WindowManager.LayoutParams = getFloatLayoutParam(false, true)
         layout.gravity = Gravity.START or Gravity.TOP
@@ -188,8 +187,8 @@ class FloatingService : AccessibilityService(), FloatTouchListener.OnFloatTouchL
      * @return 对应的layoutParam
      */
     fun getFloatLayoutParam(
-        fullScreen: Boolean,
-        touchAble: Boolean
+            fullScreen: Boolean,
+            touchAble: Boolean
     ): WindowManager.LayoutParams {
         val layoutParams = WindowManager.LayoutParams()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -197,10 +196,10 @@ class FloatingService : AccessibilityService(), FloatTouchListener.OnFloatTouchL
             //刘海屏延伸到刘海里面
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 layoutParams.layoutInDisplayCutoutMode =
-                    WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+                        WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-            && Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                && Build.VERSION.SDK_INT < Build.VERSION_CODES.M
         ) {
             layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST
         } else {
@@ -209,17 +208,17 @@ class FloatingService : AccessibilityService(), FloatTouchListener.OnFloatTouchL
 
 //        layoutParams.packageName = getPackageName();
         layoutParams.flags =
-            layoutParams.flags or WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+                layoutParams.flags or WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
 
         //Focus会占用屏幕焦点，导致游戏无声
         if (touchAble) {
             layoutParams.flags =
-                layoutParams.flags or (WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL)
+                    layoutParams.flags or (WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL)
         } else {
             layoutParams.flags =
-                layoutParams.flags or (WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                    layoutParams.flags or (WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                            or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
         if (fullScreen) {
             layoutParams.flags = layoutParams.flags or (WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -229,8 +228,8 @@ class FloatingService : AccessibilityService(), FloatTouchListener.OnFloatTouchL
             layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
         } else {
             layoutParams.flags =
-                layoutParams.flags or (WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
-                        or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN)
+                    layoutParams.flags or (WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
+                            or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN)
             layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT
             layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
         }
@@ -263,42 +262,66 @@ class FloatingService : AccessibilityService(), FloatTouchListener.OnFloatTouchL
         startTask()
     }
 
-    override fun click(point: Point) {
-        autoClickView(point)
-        Log.d(MainActivity.TAG, "click: ")
+    override fun click(point: Point, onSimulationResultListener: ViewModel.OnSimulationResultListener?) {
+        autoClickView(point, onSimulationResultListener)
     }
 
-    override fun move(start: Point, end: Point) {
-        Log.d(MainActivity.TAG, "move: ")
-
+    override fun move(start: Point, end: Point, onSimulationResultListener: ViewModel.OnSimulationResultListener?) {
+        autoSlideView(start, end, onSimulationResultListener)
     }
 
-    override fun back() {
-        Log.d(MainActivity.TAG, "back: ")
+    override fun back(onSimulationResultListener: ViewModel.OnSimulationResultListener?) {
+        autoBackView(onSimulationResultListener)
+
     }
 
 
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun autoClickView(point: Point) {
-        Log.d(MainActivity.TAG, "auto click point:$point")
+    private fun autoClickView(point: Point, onTouchDoneListener: ViewModel.OnSimulationResultListener?) {
         val path = Path()
         path.moveTo(point.x.toFloat(), point.y.toFloat())
         val gestureDescription = GestureDescription.Builder()
-            .addStroke(GestureDescription.StrokeDescription(path, 0, 5))
-            .build()
+                .addStroke(GestureDescription.StrokeDescription(path, 0, 5))
+                .build()
         dispatchGesture(
-            gestureDescription,
-            object : AccessibilityService.GestureResultCallback() {
-                override fun onCompleted(gestureDescription: GestureDescription?) {
-                    super.onCompleted(gestureDescription)
-                    Log.d(MainActivity.TAG, "自动点击完成: ")
-                }
+                gestureDescription,
+                object : AccessibilityService.GestureResultCallback() {
+                    override fun onCompleted(gestureDescription: GestureDescription?) {
+                        super.onCompleted(gestureDescription)
+                        onTouchDoneListener?.result(true)
+                    }
 
-                override fun onCancelled(gestureDescription: GestureDescription?) {
-                    super.onCancelled(gestureDescription)
-                    Log.d(MainActivity.TAG, "自动点击取消: ")
-                }
-            }, null
+                    override fun onCancelled(gestureDescription: GestureDescription?) {
+                        super.onCancelled(gestureDescription)
+                        onTouchDoneListener?.result(false)
+                    }
+                }, null
         )
     }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun autoSlideView(start: Point, end: Point, onTouchDoneListener: ViewModel.OnSimulationResultListener?) {
+        val path = Path()
+        path.moveTo(start.x.toFloat(), start.y.toFloat())
+        path.lineTo(end.x.toFloat(), end.y.toFloat())
+        val gestureDescription = GestureDescription.Builder()
+                .addStroke(GestureDescription.StrokeDescription(path, 0, 500))
+                .build()
+        dispatchGesture(
+                gestureDescription,
+                object : AccessibilityService.GestureResultCallback() {
+                    override fun onCompleted(gestureDescription: GestureDescription?) {
+                        super.onCompleted(gestureDescription)
+                        onTouchDoneListener?.result(true)
+                    }
+
+                    override fun onCancelled(gestureDescription: GestureDescription?) {
+                        super.onCancelled(gestureDescription)
+                        onTouchDoneListener?.result(false)
+                    }
+                }, null
+        )
+    }
+
+    private fun autoBackView(onSimulationResultListener: ViewModel.OnSimulationResultListener?) = onSimulationResultListener?.result(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) performGlobalAction(GLOBAL_ACTION_BACK) else false)
 }
