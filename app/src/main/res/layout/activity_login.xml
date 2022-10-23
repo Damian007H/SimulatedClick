@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="cn.ddh.simulatedclick.activity.login.LoginVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+
+        <EditText
+            android:id="@+id/et_username"
+            style="@style/et_style_01"
+            android:layout_width="0dp"
+            android:layout_marginLeft="90dp"
+            android:layout_marginTop="82dp"
+            android:layout_marginRight="90dp"
+            android:hint="请输入账号"
+            android:text="123456"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+
+        <View
+            android:id="@+id/v_account"
+            style="@style/v_line_01"
+            android:layout_width="0dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintLeft_toLeftOf="@+id/et_username"
+            app:layout_constraintRight_toRightOf="@+id/et_username"
+            app:layout_constraintTop_toBottomOf="@+id/et_username" />
+
+
+        <EditText
+            android:id="@+id/et_password"
+            style="@style/et_style_01"
+            android:layout_width="0dp"
+            android:layout_marginTop="44dp"
+            android:hint="请输入密码"
+            android:text="123456"
+            app:layout_constraintLeft_toLeftOf="@+id/v_account"
+            app:layout_constraintRight_toRightOf="@+id/v_account"
+
+            app:layout_constraintTop_toBottomOf="@+id/v_account" />
+
+
+        <View
+            android:id="@+id/v_password"
+            style="@style/v_line_01"
+            android:layout_width="0dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintLeft_toLeftOf="@+id/et_password"
+            app:layout_constraintRight_toRightOf="@+id/et_password"
+            app:layout_constraintTop_toBottomOf="@+id/et_password" />
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/tv_style_01"
+            android:layout_marginTop="278dp"
+            android:text="欢迎登录"
+            android:textSize="56dp"
+            app:layout_constraintLeft_toLeftOf="@+id/et_username"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/bt_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="96dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/login_btn_selector"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp"
+            android:text="登录"
+            android:textColor="@color/white"
+            android:textSize="36sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/v_password" />
+
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="去注册"
+            android:textColor="#329CEF"
+            android:textSize="24sp"
+            app:layout_constraintRight_toRightOf="@+id/bt_login"
+            app:layout_constraintTop_toBottomOf="@+id/bt_login" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

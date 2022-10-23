@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="SimulatedClick">SimulatedClick</string>
+
+    <string name="btn_scan_local_pic">从相册选取二维码</string>
+    <string name="btn_open_flashlight_text">打开手电筒</string>
+    <string name="btn_close_flashlight_text">关闭手电筒</string>
+    <string name="scan_fail">扫描失败!</string>
 </resources>

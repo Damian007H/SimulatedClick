@@ -8,20 +8,40 @@
     android:padding="20dp">
 
 
-    <ImageView
-        android:id="@+id/iv_add"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="5dp"
-        android:src="@mipmap/add" />
+    <Button
+        android:id="@+id/bt_open"
+        android:layout_width="160dp"
+        android:layout_height="80dp"
+        android:text="打开游戏" />
+
+    <Button
+        android:id="@+id/bt_task"
+        android:layout_width="160dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:text="Task" />
+
+<!--    <Button-->
+<!--        android:id="@+id/bt_task"-->
+<!--        android:layout_width="160dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:text="Task" />-->
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/iv_add"-->
+    <!--        android:layout_width="60dp"-->
+    <!--        android:layout_height="60dp"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:src="@mipmap/add" />-->
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/rv_content"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:layout_marginBottom="10dp" />-->
 
     <ImageView
         android:id="@+id/iv_fun"

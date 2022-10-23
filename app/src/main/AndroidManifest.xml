@@ -5,23 +5,53 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!-- 模拟操作-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+
+
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/app_logo"
         android:label="SimulatedClick"
+        android:networkSecurityConfig="@xml/cloud_epg_network_security_config"
         android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name=".activity.home.HomeActivity" />
+        <activity android:name=".activity.login.LoginActivity">
+
+        </activity>
+        <activity android:name=".zxing.activity.CaptureActivity" />
+        <activity android:name=".activity.regiester.RegisterActivity" />
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".FloatingService"
+
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
@@ -30,6 +60,24 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility" />
         </service>
+        <!--        <receiver android:name=".MainActivity$ClickBroadcast">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="cn.ddh.simulatedclick.click" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
+        <!--        <receiver android:name=".ClickBroadcast" >-->
+
+        <!--            <intent-filter>-->
+        <!--                <action android:name="cn.ddh.simulatedclick.click" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
+
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="750" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="1624" />
     </application>
 
 </manifest>

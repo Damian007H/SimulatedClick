@@ -3,12 +3,17 @@ package cn.ddh.simulatedclick
 import android.graphics.Point
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.os.Message
+import android.text.TextUtils
 import android.util.Log
+import cn.ddh.simulatedclick.bean.AgentInfo
 import cn.ddh.simulatedclick.event.BackEvent
 import cn.ddh.simulatedclick.event.ClickEvent
 import cn.ddh.simulatedclick.event.EventBase
 import cn.ddh.simulatedclick.event.SlideEvent
+import cn.ddh.simulatedclick.net.RetrofitRequest
+import cn.ddh.simulatedclick.zxing.utils.ToastUtil
 
 class ViewModel(private val listener: OnWorkDoneListener) {
 
@@ -20,6 +25,7 @@ class ViewModel(private val listener: OnWorkDoneListener) {
         fun click(point: Point, onSimulationResultListener: ViewModel.OnSimulationResultListener?)
         fun move(start: Point, end: Point, onSimulationResultListener: ViewModel.OnSimulationResultListener?)
         fun back(onSimulationResultListener: ViewModel.OnSimulationResultListener?)
+        fun agentInfo(times: Int)
     }
 
     interface OnSimulationResultListener {
@@ -27,7 +33,10 @@ class ViewModel(private val listener: OnWorkDoneListener) {
     }
 
     fun toWork(eventBase: EventBase) {
-        val obtainMessage = Handler().obtainMessage()
+
+
+        Log.d("test_dev_hjd", "toWork: 执行任务")
+        val obtainMessage = Message()
         val bundle = Bundle()
         bundle.putSerializable(keyCode, eventBase)
         obtainMessage.data = bundle
@@ -46,9 +55,7 @@ class ViewModel(private val listener: OnWorkDoneListener) {
     private fun toDealMsg(msg: Message) {
         when (val eventBase = msg.data.getSerializable(keyCode) as EventBase) {
             is ClickEvent -> {
-                val test: ClickEvent = eventBase
-                val point = test.getPoint()
-                listener.click(point, object : OnSimulationResultListener {
+                listener.click(eventBase.getPoint(), object : OnSimulationResultListener {
                     override fun result(boolean: Boolean) {
                         LOGPRINT("点击", boolean)
                     }
@@ -78,6 +85,23 @@ class ViewModel(private val listener: OnWorkDoneListener) {
     }
 
     private fun LOGPRINT(s: String, result: Boolean) {
-        Log.d("test_hjd", "模拟$s,结果:$result")
+        Log.d("test_dev", s + "结果:$result")
+        ToastUtil.show(s + "结果:$result")
+    }
+
+
+    fun requestAgent() {
+        val token = App.INSTANCE.currentUserinfo?.token
+        if (TextUtils.isEmpty(token)) {
+            ToastUtil.show("请先登录")
+            return
+        }
+        RetrofitRequest.getInstance().agentInfo(token!!).enqueue(object : BaseCallback<AgentInfo> {
+            override fun onNext(data: AgentInfo?) {
+                listener.agentInfo(data?.times ?: -1)
+            }
+        })
+
+
     }
 }

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="teal_200">#FF03DAC5</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#000</color>
+    <color name="white">#fff</color>
+    <color name="colorPrimary">#303135</color>
+    <color name="colorPrimaryDark">#393A3F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="common_content_bg_white">#ffffff</color>
+    <color name="transparent">#0000</color>
 </resources>
